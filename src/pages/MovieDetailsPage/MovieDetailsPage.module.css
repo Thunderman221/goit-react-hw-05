@@ -1,0 +1,24 @@
+.wrapper {
+  padding-left: 20px;
+  padding-top: 10px;
+}
+.container {
+  display: flex;
+  gap: 20px;
+}
+.img {
+  height: 350px;
+}
+
+.elem {
+  margin-bottom: 10px;
+}
+.genres {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  gap: 10px;
+}
+.addInfo {
+  padding-left: 50px;
+}
