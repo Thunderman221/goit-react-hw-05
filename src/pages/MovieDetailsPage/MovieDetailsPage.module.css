@@ -8,6 +8,7 @@
 }
 .img {
   height: 350px;
+  width: 350px;
 }
 
 .elem {
@@ -21,4 +22,47 @@
 }
 .addInfo {
   padding-left: 50px;
+  list-style: none;
+}
+
+.link {
+  text-decoration: none;
+  font-weight: bold;
+
+  color: #fafafa;
+
+  width: 100%;
+
+  &:hover {
+    color: red;
+  }
+}
+.addLink {
+  text-decoration: none;
+  font-weight: bold;
+
+  color: red;
+
+  transition: transform 0.3 ease;
+  &:hover {
+    color: rgba(255, 0, 0, 0.697);
+  }
+}
+.linkContainer {
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  border: 1px solid red;
+  width: 100px;
+  background-color: red;
+
+  display: flex;
+  justify-content: center;
+  text-align: center;
+
+  transition: transform 0.3 ease;
+
+  &:hover {
+    background-color: #fafafa;
+  }
 }

@@ -1,15 +1,22 @@
-// MovieDetailsPage.jsx
-import { NavLink, useParams, Outlet } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {
+  NavLink,
+  useParams,
+  Outlet,
+  Link,
+  useLocation,
+} from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import s from "./MovieDetailsPage.module.css";
-import { fetchMovieId, fetchCastById } from "../../services/api"; // Импортируем fetchCastById
+import { fetchMovieId, fetchCastById } from "../../services/api";
 
 const MovieDetails = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
-  const [cast, setCast] = useState([]); // Новое состояние для кастов
+  const [cast, setCast] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const location = useLocation();
+  const goBackRef = useRef(location.state);
 
   useEffect(() => {
     const getMovieDetails = async () => {
@@ -17,7 +24,6 @@ const MovieDetails = () => {
         const movieData = await fetchMovieId(movieId);
         setMovie(movieData);
 
-        // Получаем каст после получения данных о фильме
         const castData = await fetchCastById(movieId);
         setCast(castData.cast);
       } catch (error) {
@@ -47,6 +53,11 @@ const MovieDetails = () => {
     <div className={s.wrapper}>
       {movie && (
         <>
+          <div className={s.linkContainer}>
+            <Link to={goBackRef.current ?? "/movies"} className={s.link}>
+              Go Back
+            </Link>
+          </div>
           <div className={s.container}>
             <div>
               <img src={posterUrl} alt={movie.title} className={s.img} />
@@ -69,13 +80,17 @@ const MovieDetails = () => {
           </div>
           <hr />
           <div>
-            <p>Additional information</p>
+            <h3 className={s.h3}>Additional information</h3>
             <ul className={s.addInfo}>
               <li>
-                <NavLink to="cast">Cast</NavLink>
+                <NavLink to="cast" className={s.addLink}>
+                  Cast
+                </NavLink>
               </li>
               <li>
-                <NavLink to="reviews">Reviews</NavLink>
+                <NavLink to="reviews" className={s.addLink}>
+                  Reviews
+                </NavLink>
               </li>
             </ul>
           </div>

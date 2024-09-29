@@ -34,3 +34,11 @@ export const fetchCastById = async (movieId) => {
 export const fetchReviewsById = async (movieId) => {
   return await fetchMovies(`/movie/${movieId}/reviews`);
 };
+
+export const fetchMoviesByQuery = async (query) => {
+  if (!query) {
+    throw new Error("Query is required to fetch movies.");
+  }
+
+  return await fetchMovies("/search/movie", { query });
+};
