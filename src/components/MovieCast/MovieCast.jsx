@@ -1,4 +1,3 @@
-// MovieCast.jsx
 import { useOutletContext } from "react-router-dom";
 import s from "./MovieCast.module.css";
 

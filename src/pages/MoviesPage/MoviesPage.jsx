@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
+import { useLocation, useNavigate } from "react-router-dom";
 import s from "./MoviesPage.module.css";
 import { fetchMoviesByQuery } from "../../services/api";
 import MovieList from "../../components/MovieList/MovieList";
@@ -10,34 +11,49 @@ const MoviesPage = () => {
   const [error, setError] = useState(null);
   const [noResults, setNoResults] = useState(false);
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const initialValues = {
-    query: "",
+    query: new URLSearchParams(location.search).get("query") || "",
   };
 
-  const handleSubmit = async (values) => {
-    if (!values.query.trim()) {
+  useEffect(() => {
+    const fetchMovies = async () => {
+      const query = new URLSearchParams(location.search).get("query");
+      if (query) {
+        setLoading(true);
+        setError(null);
+        setNoResults(false);
+
+        try {
+          const data = await fetchMoviesByQuery(query);
+          if (data.results.length === 0) {
+            setNoResults(true);
+          } else {
+            setMovies(data.results);
+          }
+        } catch (err) {
+          setError("An error occurred. Please try again.");
+          console.log(`Error: ${err}`);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchMovies();
+  }, [location.search]);
+
+  const handleSubmit = (values) => {
+    const trimmedQuery = values.query.trim();
+
+    if (!trimmedQuery) {
       setError("Please enter a valid search term.");
       return;
     }
 
-    setLoading(true);
-    setError(null);
-    setNoResults(false);
-
-    try {
-      const data = await fetchMoviesByQuery(values.query);
-
-      if (data.results.length === 0) {
-        setNoResults(true);
-      } else {
-        setMovies(data.results);
-      }
-      // eslint-disable-next-line no-unused-vars
-    } catch (err) {
-      setError("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    navigate(`?query=${trimmedQuery}`);
   };
 
   return (

@@ -5,7 +5,7 @@ import {
   Link,
   useLocation,
 } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import s from "./MovieDetailsPage.module.css";
 import { fetchMovieId, fetchCastById } from "../../services/api";
 
@@ -95,7 +95,9 @@ const MovieDetails = () => {
             </ul>
           </div>
           <hr />
-          <Outlet context={{ cast }} />
+          <Suspense fallback={<h2>Second loading</h2>}>
+            <Outlet context={{ cast }} />
+          </Suspense>
         </>
       )}
     </div>
